@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxj.mapper.UserMapper">
+<cache></cache>
+<resultMap type="user" id="resultmap">
+<id column="u_id" property="id"/>
+<result column="u_username" property="username"/>
+</resultMap>
+  <resultMap type="user" id="userCustomMap">
+     <result column="username" property="username"/>
+     <result column="age" property="age"/>
+     <collection property="orders" ofType="order">
+     <collection property="orderDetails" ofType="orderDetail">       
+       <association property="item" javaType="item">
+         <result column="name" property="name"/>
+       </association>       
+     </collection>
+     </collection>    
+ </resultMap>
+    <select id="findUserById" parameterType="int" resultMap="resultmap" useCache="true">
+      select * from users where id=#{u_id}
+    </select>
+	<select id="findUserByName" parameterType="string" resultType="com.dbzq.po.User">
+      select * from users where username=#{username}
+    </select>
+    <select id="findUserByName2" parameterType="string" resultType="com.dbzq.po.User">
+      select * from users where username like '%${value}%'
+    </select>
+    <delete id="deleteUser"  parameterType="int">
+       delete from users where id =#{id}
+    </delete>
+    <insert id="addUser" parameterType="com.dbzq.po.User">
+        <selectKey order="AFTER" resultType="int" keyProperty="id">
+        select last_insert_id()
+        </selectKey>
+       insert into users (username,age) values(#{username},#{age})
+    </insert>
+    <update id="updateUser" parameterType="com.dbzq.po.User" flushCache="true">
+        update users set username=#{username},age=#{age}  where id=#{id}
+    </update>
+     <select id="findUserAndItem"  resultMap="userCustomMap">
+       select username,age,name  
+      from users,items,orders,orderdetail 
+      where users.id=orders.u_id and orders.id=orderdetail.orders_id and orderdetail.items_id=items.id
+    </select>
+</mapper>

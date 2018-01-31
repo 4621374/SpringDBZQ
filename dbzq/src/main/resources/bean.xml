@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="itemDao" class="com.dbzq.sec.ItemDAO" >
+        <!-- collaborators and configuration for this bean go here -->
+    </bean>
+      <bean id="itemService" class="com.dbzq.sec.ItemService" >
+         <property name="itemDAO" ref="itemDao"	></property>
+    </bean>
+    
+    <bean id="itemAction" class="com.dbzq.sec.ItemAction" >
+         <property name="itemService" ref="itemService"	></property>
+    </bean>
+ 
+
+
+    <!-- 内部bean -->
+     <bean id="itemAction2" class="com.dbzq.sec.ItemAction" >
+         <property name="itemService">
+           <bean id="itemService" class="com.dbzq.sec.ItemService" >
+               <property name="itemDAO"	>
+                   <bean id="itemDao" class="com.dbzq.sec.ItemDAO" >
+                   </bean>
+               </property>
+           </bean>
+         </property>
+    </bean>
+    
+
+</beans>

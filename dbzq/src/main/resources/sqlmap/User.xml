@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+ 
+    <select id="findUserById" parameterType="int" resultType="com.dbzq.po.User">
+      select * from users where id=#{id}
+    </select>
+	<select id="findUserByName" parameterType="string" resultType="com.dbzq.po.User">
+      select * from users where username=#{username}
+    </select>
+    <select id="findUserByName2" parameterType="string" resultType="com.dbzq.po.User">
+      select * from users where username like '%${value}%'
+    </select>
+    <delete id="deleteUser"  parameterType="int">
+       delete from users where id =#{id}
+    </delete>
+    <insert id="addUser" parameterType="com.dbzq.po.User">
+        <selectKey order="AFTER" resultType="int" keyProperty="id">
+        select last_insert_id()
+        </selectKey>
+       insert into users (username,age) values(#{username},#{age})
+    </insert>
+    <update id="updateUser" parameterType="com.dbzq.po.User">
+        update users set username=#{username},age=#{age}  where id=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxj.mapper.OrderCustomMapper">
+ <resultMap type="order" id="orderUserlistMap">
+   <result column="id" property="id"/>
+    <result column="number" property="number"/>
+     <result column="createtime" property="createtime"/>
+     <result column="note" property="note"/>
+     <association property="user" javaType="user">
+     <result column="u_id" property="id"/>
+     <result column="username" property="username"/>
+     <result column="age" property="age"/>
+     </association>
+ </resultMap>
+  <resultMap type="order" id="orderCustomMap">
+   <result column="id" property="id"/>
+    <result column="number" property="number"/>
+     <result column="createtime" property="createtime"/>
+     <result column="note" property="note"/>
+     <association property="user" select="com.zxj.mapper.UserMapper.findUserById" column="u_id">
+     <id column="u_id" property="id"/>
+     <result column="username" property="username"/>
+     <result column="age" property="age"/>
+     </association>
+ </resultMap>
+ <resultMap type="order" id="orderDetaillistMap">
+   <result column="id" property="id"/>
+    <result column="number" property="number"/>
+     <result column="createtime" property="createtime"/>
+     <result column="note" property="note"/>
+     <collection property="orderDetails" ofType="orderDetail">
+       <id column="orderdetail_id" property="id"/>
+       <result column="orders_id" property="orders_id"/>
+        <result column="items_id" property="items_id"/>
+        
+     </collection>
+    
+ </resultMap>
+ 
+    <select id="findOrderUserlist"  resultType="orderCustom">
+      select orders.*,username,age from orders,users where users.id=orders.u_id
+    </select>
+     <select id="findOrderUserlistMap2"  resultMap="orderCustomMap">
+      select * from orders
+    </select>
+    <select id="findOrderUserlistMap"  resultMap="orderUserlistMap">
+      select orders.*,username,age from orders,users where users.id=orders.u_id
+    </select>
+        <select id="findOrderDetaillistMap"  resultMap="orderDetaillistMap">
+      select orders.*,orderdetail.id orderdetail_id,items_num,items_id from orders,orderdetail where orders.id=orderdetail.orders_id
+    </select>
+     
+
+</mapper>
