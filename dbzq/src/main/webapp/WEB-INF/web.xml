@@ -27,6 +27,21 @@
         <servlet-name>spring-mvc</servlet-name>  
         <url-pattern>*.action</url-pattern>  
     </servlet-mapping>  
+    
+        <servlet>  
+        <servlet-name>spring-mvc-restful</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+         <init-param>
+            <param-name>contextConfigLocation</param-name>
+          <param-value>classpath:spring/spring-mvc.xml</param-value> 
+               <!--<param-value>/WEB-INF/spring-mvc.xml</param-value>-->
+        </init-param>
+    </servlet>  
+  
+    <servlet-mapping>  
+        <servlet-name>spring-mvc-restful</servlet-name>  
+        <url-pattern>/</url-pattern>  
+    </servlet-mapping>  
     <!-- Servlet Encoding Start -->  
     <filter>  
         <filter-name>Set Character Encoding</filter-name>  

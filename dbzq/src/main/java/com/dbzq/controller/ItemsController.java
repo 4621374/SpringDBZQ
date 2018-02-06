@@ -22,8 +22,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,7 +57,7 @@ public class ItemsController {
 		List<ItemsCustom> itemsList=itemsService.findItemlist(null);
 		ModelAndView modelAndView=new ModelAndView();
 		modelAndView.addObject("items",itemsList);
-		modelAndView.setViewName("itemList");
+		modelAndView.setViewName("itemList2");
 		return modelAndView;
 		
 	}
@@ -149,4 +151,12 @@ public class ItemsController {
 //	public void initBinder(WebDataBinder binder)throws Exception {
 //		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-DD"), true));
 //	}
+	@RequestMapping("/viewItems/{id}")
+	public @ResponseBody ItemsCustom viewItems(@PathVariable Integer id) throws Exception {
+		
+		ItemsCustom itemsCustom=itemsService.findItemByID(id);
+		return itemsCustom;
+		
+		
+	}
 }
